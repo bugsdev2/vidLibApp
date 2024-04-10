@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn-outline {
+    @apply px-4 py-1 border rounded-xl hover:bg-primary hover:border-primary;
+  }
+  .btn {
+    @apply px-4 py-1 border border-primary rounded-xl bg-primary hover:bg-[rgb(27,58,87)] hover:border-[rgb(27,58,87)];
+  }
+}

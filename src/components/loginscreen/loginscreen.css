@@ -1,0 +1,29 @@
+#banner {
+  background-image: url("/public/banner3.png");
+  background-size: cover;
+  background-position: center top;
+  position: relative;
+}
+
+#banner > #shader {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* background-color: rgba(0, 0, 0, 0.6); */
+}
+
+#banner > #content {
+  position: relative;
+  z-index: 10;
+}
+
+#content > #shader {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  border: 1px solid gray;
+  position: absolute;
+  inset: -4rem;
+  z-index: -1;
+}
