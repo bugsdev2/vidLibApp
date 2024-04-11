@@ -1,11 +1,10 @@
 import "./loginscreen.css";
 import { useNavigate } from "react-router-dom";
-import LoginForm from "../loginform/loginform";
 
 export default function LoginScreen() {
   const navigate = useNavigate();
   function handleLoginCLick() {
-    navigate();
+    navigate("#");
   }
   return (
     <>
