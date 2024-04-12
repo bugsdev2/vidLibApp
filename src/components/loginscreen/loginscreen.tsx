@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function LoginScreen() {
   const navigate = useNavigate();
-  function handleLoginCLick() {
-    navigate("#");
-  }
+
   return (
     <>
       <main className="text-light bg-dark h-[100dvh]">
@@ -19,10 +17,12 @@ export default function LoginScreen() {
         </header>
         <section className="flex justify-center">
           <div className="flex gap-3">
-            <button className="btn-outline" onClick={handleLoginCLick}>
+            <button className="btn-outline" onClick={() => navigate("/login")}>
               Login
             </button>
-            <button className="btn">Sign Up</button>
+            <button className="btn" onClick={() => navigate("/signup")}>
+              Sign Up
+            </button>
           </div>
         </section>
         <section

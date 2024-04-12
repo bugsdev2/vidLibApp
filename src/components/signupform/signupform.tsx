@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function LoginForm() {
+export default function SignUpForm() {
   return (
     <>
       <div className="text-light text-center h-[88dvh]">
@@ -21,8 +21,25 @@ export default function LoginForm() {
             className="rounded-md flex mt-36 flex-col gap-3"
           >
             <div id="shader"></div>
-            <div className="text-lightred">Login to your Account</div>
-
+            <div className="text-lightred">Sign Up for a new Account</div>
+            <div className="flex flex-col md:flex-row gap-2 justify-between">
+              <label htmlFor="name">Name</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                className="bg-dark border rounded-lg px-2"
+              />
+            </div>
+            <div className="flex flex-col md:flex-row gap-2 justify-between">
+              <label htmlFor="email">Email ID</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                className="bg-dark border rounded-lg px-2"
+              />
+            </div>
             <div className="flex flex-col md:flex-row gap-2 justify-between">
               <label htmlFor="username">User Name</label>
               <input
@@ -43,16 +60,17 @@ export default function LoginForm() {
             </div>
             <div>
               <button type="button" className="btn mt-3">
-                Login
+                Sign Up
               </button>
-              <div>
-                <small>
-                  <Link to="/signup" className="text-primary">
-                    Click here
-                  </Link>{" "}
-                  to create a new account
-                </small>
-              </div>
+            </div>
+            <div>
+              <small>
+                Already have an account?{" "}
+                <Link to="/login" className="text-primary">
+                  Click here
+                </Link>{" "}
+                to login
+              </small>
             </div>
           </form>
         </section>
