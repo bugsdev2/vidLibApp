@@ -4,6 +4,11 @@ import { useNavigate } from "react-router-dom";
 export default function LoginScreen() {
   const navigate = useNavigate();
 
+  function handleSubmit(e: InputEvent) {
+    e.preventDefault();
+    navigate("signup");
+  }
+
   return (
     <>
       <main className="text-light bg-dark h-[100dvh]">
@@ -33,25 +38,18 @@ export default function LoginScreen() {
           <div id="content">
             <div id="shader"></div>
             <div className="flex justify-center">
-              <span className="text-light mb-5 font-bold">
-                Enter your Email ID to Sign Up
+              <span className="text-xl text-center text-primary mb-5 font-bold">
+                Discover Timeless Classics
               </span>
             </div>
-            <div>
-              <form className="flex justify-center bg-dark rounded-lg w-full">
-                <div className="border border-gray-300 px-3 rounded-lg flex justify-around w-full">
-                  <input
-                    type="search"
-                    className="bg-dark py-1 rounded-xl focus:outline-none focus:border-none"
-                  />
-                  <button
-                    type="button"
-                    className="bg-primary px-3 rounded-r-lg relative -right-3 active:bg-darkred"
-                  >
-                    <span className="bi bi-chevron-right"></span>
-                  </button>
-                </div>
-              </form>
+            <div className="text-center w-60 md:w-96">
+              Immerse yourself in the vibrant cultures and landscapes of South
+              India through our handpicked selection of movies.
+            </div>
+            <div className="text-center w-60 md:w-96">
+              From the rustic charm of village life to the bustling streets of
+              metropolitan cities, each film offers a unique glimpse into the
+              heart and soul of the region.
             </div>
           </div>
         </section>
