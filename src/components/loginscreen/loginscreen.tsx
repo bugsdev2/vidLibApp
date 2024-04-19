@@ -4,11 +4,6 @@ import { useNavigate } from "react-router-dom";
 export default function LoginScreen() {
   const navigate = useNavigate();
 
-  function handleSubmit(e: InputEvent) {
-    e.preventDefault();
-    navigate("signup");
-  }
-
   return (
     <>
       <main className="text-light bg-dark h-[100dvh]">
