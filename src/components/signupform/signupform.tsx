@@ -1,10 +1,37 @@
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+
+interface SignUpValueObject {
+  fullname: string;
+  email: string;
+  username: string;
+  password: string;
+}
 
 export default function SignUpForm() {
-  function handleSubmit(values: object) {
-    console.log(values);
+  function handleSubmit(values: SignUpValueObject) {
+    let usernamesArray: string[];
+    axios
+      .get(`http://127.0.0.1:5000/check-user/${values.username}`)
+      .then((response) => {
+        usernamesArray = [
+          ...response.data.map((item: { username: string }) => item.username),
+        ];
+        if (usernamesArray.includes(values.username)) {
+          alert("Username already exists. Please choose another one");
+        } else {
+          axios
+            .post("http://127.0.0.1:5000/add-user", values)
+            .then(() => {
+              console.log("User Added");
+            })
+            .catch((err) => {
+              console.log("Error: ", err.message);
+            });
+        }
+      });
   }
   return (
     <>
@@ -29,22 +56,22 @@ export default function SignUpForm() {
             }}
             onSubmit={(values) => handleSubmit(values)}
             validationSchema={Yup.object({
-              fullname: Yup.string().required("Please enter your name"),
+              fullname: Yup.string().required("*Please enter your name"),
               email: Yup.string()
-                .required("Please enter your email id")
-                .email("Please enter a valid Email ID"),
+                .required("*Please enter your email id")
+                .email("*Please enter a valid Email ID"),
               username: Yup.string()
-                .required("Please enter a user name")
-                .matches(/^[a-z]\D+/, "Please start with a lowercase letter")
-                .min(6, "User name should be more than 6 letters")
-                .max(15, "User name should be less than 15 letters"),
+                .required("*Please enter a user name")
+                .matches(/^[a-z]\D+/, "*Please start with a lowercase letter")
+                .min(6, "*User name should be more than 6 letters")
+                .max(15, "*User name should be less than 15 letters"),
               password: Yup.string()
-                .required("Please enter a password")
-                .min(6, "Password should be more than 6 letters")
-                .max(20, "Password should be less than 20 letters")
+                .required("*Please enter a password")
+                .min(6, "*Password should be more than 6 letters")
+                .max(20, "*Password should be less than 20 letters")
                 .matches(
                   /(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])\w{6,20}/,
-                  "Password should have at least one capital letter, one small letter and one number"
+                  "*Password should have at least one capital letter, one small letter and one number"
                 ),
             })}
           >
@@ -87,7 +114,10 @@ export default function SignUpForm() {
                   type="text"
                   className="bg-dark border rounded-lg px-2"
                 />
-                <small className="text-red-700 md:col-span-2 md:text-end md:pe-3">
+                <small
+                  id="username-err"
+                  className="text-red-700 md:col-span-2 md:text-end md:pe-3"
+                >
                   <ErrorMessage name="username" component="span"></ErrorMessage>
                 </small>
               </div>
