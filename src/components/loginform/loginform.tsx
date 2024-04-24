@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 export default function LoginForm() {
-  function handleSubmit(values: object) {
+  function handleSubmit(values: { username: string; password: string }) {
     console.log(values);
   }
   return (
@@ -30,17 +30,17 @@ export default function LoginForm() {
             }}
             validationSchema={Yup.object({
               username: Yup.string()
-                .required("Please enter a user name")
-                .matches(/^[a-z]\D+/, "Please start with a lowercase letter")
-                .min(6, "User name should be more than 6 letters")
-                .max(15, "User name should be less than 15 letters"),
+                .required("*Please enter a user name")
+                .matches(/^[a-z]\D+/, "*Please start with a lowercase letter")
+                .min(6, "*User name should be more than 6 letters")
+                .max(15, "*User name should be less than 15 letters"),
               password: Yup.string()
-                .required("Please enter a password")
-                .min(6, "Password should be more than 6 letters")
-                .max(20, "Password should be less than 20 letters")
+                .required("*Please enter a password")
+                .min(6, "*Password should be more than 6 letters")
+                .max(20, "*Password should be less than 20 letters")
                 .matches(
                   /(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])\w{6,20}/,
-                  "Password should have at least one capital letter, one small letter and one number"
+                  "*Password should have at least one capital letter, one small letter and one number"
                 ),
             })}
           >
