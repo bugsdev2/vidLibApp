@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { useEffect } from "react";
+import { useCookies } from "react-cookie";
 
 interface SignUpValueObject {
   fullname: string;
@@ -11,21 +13,30 @@ interface SignUpValueObject {
 }
 
 export default function SignUpForm() {
+  const navigate = useNavigate();
+
+  const [cookie, ,] = useCookies(["username"]);
+
+  useEffect(() => {
+    if (cookie.username !== undefined) {
+      navigate("/dashboard");
+    }
+  }, [cookie.username]);
+
   function handleSubmit(values: SignUpValueObject) {
-    let usernamesArray: string[];
+    let usernamePrev: string;
     axios
-      .get(`http://127.0.0.1:5000/check-user/${values.username}`)
+      .get(`https://vidlibapp-api.onrender.com/check-user/${values.username}`)
       .then((response) => {
-        usernamesArray = [
-          ...response.data.map((item: { username: string }) => item.username),
-        ];
-        if (usernamesArray.includes(values.username)) {
+        usernamePrev = response.data.username;
+        if (values.username === usernamePrev) {
           alert("Username already exists. Please choose another one");
         } else {
           axios
-            .post("http://127.0.0.1:5000/add-user", values)
+            .post("https://vidlibapp-api.onrender.com/add-user", values)
             .then(() => {
               console.log("User Added");
+              navigate("/login");
             })
             .catch((err) => {
               console.log("Error: ", err.message);
@@ -36,15 +47,9 @@ export default function SignUpForm() {
   return (
     <>
       <div className="text-light text-center h-[88dvh]">
-        <header className="flex p-3 justify-center">
-          <Link to="/" className="text-2xl font-bold cursor-pointer">
-            <span className="uppercase">Movie</span>{" "}
-            <span className="text-primary uppercase">Library</span>
-          </Link>
-        </header>
         <section
           id="banner"
-          className="flex justify-center items-start mt-5 bg-[url('/banner5.png')] md:bg-[url('/banner4.png')] h-full"
+          className="flex justify-center mt-5 bg-[url('/banner5.png')] md:bg-[url('/banner4.png')] h-full"
         >
           <div id="shader"></div>
           <Formik
@@ -78,11 +83,11 @@ export default function SignUpForm() {
             <Form
               id="content"
               action=""
-              className="rounded-md flex mt-36 flex-col gap-3"
+              className="rounded-md flex mt-36 flex-col gap-3 h-fit"
             >
               <div id="shader"></div>
               <div className="text-lightred">Sign Up for a new Account</div>
-              <div className="flex flex-col md:grid grid-cols-2 gap-2 justify-between">
+              <div className="flex flex-col sm:grid grid-cols-2 gap-2 justify-between">
                 <label htmlFor="name">Name</label>
                 <Field
                   id="fullname"
@@ -90,11 +95,11 @@ export default function SignUpForm() {
                   type="text"
                   className="bg-dark border rounded-lg px-2"
                 />
-                <small className="text-red-700 md:col-span-2 md:text-end md:pe-3">
+                <small className="text-red-700 sm:col-span-2 sm:text-end md:pe-3 -my-1.5">
                   <ErrorMessage name="fullname" component="span"></ErrorMessage>
                 </small>
               </div>
-              <div className="flex flex-col md:grid grid-cols-2 gap-2 justify-between">
+              <div className="flex flex-col sm:grid grid-cols-2 gap-2 justify-between">
                 <label htmlFor="email">Email ID</label>
                 <Field
                   id="email"
@@ -102,11 +107,11 @@ export default function SignUpForm() {
                   type="email"
                   className="bg-dark border rounded-lg px-2"
                 />
-                <small className="text-red-700 md:col-span-2 md:text-end md:pe-3">
+                <small className="text-red-700 sm:col-span-2 sm:text-end md:pe-3 -my-1.5">
                   <ErrorMessage name="email" component="span"></ErrorMessage>
                 </small>
               </div>
-              <div className="flex flex-col md:grid grid-cols-2 gap-2 justify-between">
+              <div className="flex flex-col sm:grid grid-cols-2 gap-2 justify-between">
                 <label htmlFor="username">User Name</label>
                 <Field
                   id="username"
@@ -116,12 +121,12 @@ export default function SignUpForm() {
                 />
                 <small
                   id="username-err"
-                  className="text-red-700 md:col-span-2 md:text-end md:pe-3"
+                  className="text-red-700 sm:col-span-2 sm:text-end md:pe-3 -my-1.5"
                 >
                   <ErrorMessage name="username" component="span"></ErrorMessage>
                 </small>
               </div>
-              <div className="flex flex-col md:grid grid-cols-2 gap-2 justify-between">
+              <div className="flex flex-col sm:grid grid-cols-2 gap-2 justify-between">
                 <label htmlFor="password">Password</label>
                 <Field
                   id="password"
@@ -129,7 +134,7 @@ export default function SignUpForm() {
                   type="password"
                   className="bg-dark border rounded-lg px-2"
                 />
-                <small className="text-red-700 md:col-span-2 md:text-end md:pe-3">
+                <small className="text-red-700 sm:col-span-2 sm:text-end md:pe-3 -my-1.5">
                   <ErrorMessage name="password" component="div"></ErrorMessage>
                 </small>
               </div>
