@@ -30,7 +30,7 @@ export default function LoginForm() {
           alert("Entered the wrong password. Please try again");
         }
       })
-      .catch((err:) => {
+      .catch((err) => {
         err.message ? alert(err.message) : alert(err);
       });
   }
