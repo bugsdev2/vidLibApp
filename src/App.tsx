@@ -6,27 +6,29 @@ import LoginForm from "./components/loginform/loginform";
 import SignUpForm from "./components/signupform/signupform";
 import UserDashboard from "./components/user-dashboard/dashboard";
 import { useCookies } from "react-cookie";
+import { useState, useRef } from "react";
 
 function App() {
   const navigate = useNavigate();
-
+  const [display, setDisplay] = useState("none");
+  const displayRef = useRef<any>();
   const [cookie, , removeCookie] = useCookies(["username"]);
 
   function handleLogOutClick() {
     if (cookie.username !== undefined || cookie.username !== "") {
       removeCookie("username");
-      document.querySelector("#aside").style.display = "none";
+      setDisplay("none");
     }
   }
   function handleMenuClick() {
-    document.querySelector("#aside").style.display = "flex";
+    setDisplay("flex");
   }
 
-  document.body.addEventListener("click", (e) => {
-    if (e.target.id === "menu" || e.target.id === "aside") {
-      document.querySelector("#aside").style.display = "flex";
-    } else if (e.target.id !== "aside") {
-      document.querySelector("#aside").style.display = "none";
+  document.body.addEventListener("click", () => {
+    if (displayRef.current.id === "menu" || displayRef.current.id === "aside") {
+      setDisplay("flex");
+    } else if (displayRef.current.id !== "aside") {
+      setDisplay("none");
     }
   });
 
@@ -57,7 +59,11 @@ function App() {
         id="aside"
         className="h-[100dvh] bg-dark w-48 fixed inset-0 p-2 hidden flex-col items-center gap-5 pt-10"
       >
-        <span id="aside" className="font-bold text-sm">
+        <span
+          id="aside"
+          ref={displayRef}
+          className={`font-bold text-sm ${display}`}
+        >
           Hello, {cookie.username}
         </span>
         <button onClick={handleLogOutClick} className="btn-outline">
