@@ -12,16 +12,17 @@ export default function Dashboard() {
   const [zoom, setZoom] = useState("");
   const [shader, setShader] = useState("bg-[rgba(0,0,0,0.3)] transition");
 
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<
+    { name: "string"; category: "string" }[]
+  >([]);
 
   // IF COOKIE NOT SAVED, RETURN TO LOGIN SCREEN
   useEffect(() => {
-    if (cookie.username === "" || cookie.username === undefined)
-      navigate("/login");
+    if (cookie.username === undefined) navigate("/login");
     axios
       .get(`https://vidlibapp-api.onrender.com/check-user/${cookie.username}`)
       .then((res) => {
-        console.log(res.data1);
+        console.log(res.data);
       });
   }, [cookie.username]);
 
