@@ -19,8 +19,10 @@ export default function LoginForm() {
     axios
       .get(`https://vidlibapp-api.onrender.com/check-user/${values.username}`)
       .then((res) => {
-        if (res.data === "")
-          throw "Please create an account to use Movie Library";
+        if (res.data === "") {
+          const err: string = "Please create an account to use Movie Library";
+          throw err;
+        }
         if (values.password === res.data.password) {
           setCookie("username", values.username);
           navigate("/dashboard");
@@ -28,8 +30,8 @@ export default function LoginForm() {
           alert("Entered the wrong password. Please try again");
         }
       })
-      .catch((err) => {
-        alert(err) && alert(err.message);
+      .catch((err:) => {
+        err.message ? alert(err.message) : alert(err);
       });
   }
   return (
