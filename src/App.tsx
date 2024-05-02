@@ -6,22 +6,31 @@ import LoginForm from "./components/loginform/loginform";
 import SignUpForm from "./components/signupform/signupform";
 import UserDashboard from "./components/user-dashboard/dashboard";
 import { useCookies } from "react-cookie";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const navigate = useNavigate();
-  const [display, setDisplay] = useState("hidden");
+  const [asideDisplay, setAsideDisplay] = useState("hidden");
+  const [iconDisplay, setIconDisplay] = useState("invisible");
   const [cookie, , removeCookie] = useCookies(["username"]);
 
   function handleLogOutClick() {
     if (cookie.username !== undefined || cookie.username !== "") {
       removeCookie("username");
-      setDisplay("hidden");
+      setAsideDisplay("hidden");
     }
   }
   function handleMenuClick() {
-    setDisplay("flex");
+    setAsideDisplay("flex");
   }
+
+  useEffect(() => {
+    if (cookie.username) {
+      setIconDisplay("");
+    } else {
+      setIconDisplay("invisible");
+    }
+  }, [cookie.username]);
 
   document.body.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -29,9 +38,9 @@ function App() {
       (e.target as HTMLElement).id === "menu" ||
       (e.target as HTMLElement).id === "aside"
     ) {
-      setDisplay("flex");
+      setAsideDisplay("flex");
     } else if ((e.target as HTMLElement).id !== "aside") {
-      setDisplay("hidden");
+      setAsideDisplay("hidden");
     }
   });
 
@@ -41,11 +50,11 @@ function App() {
         <div
           id="menu"
           onClick={handleMenuClick}
-          className="bi bi-justify text-2xl cursor-pointer"
+          className={`bi bi-justify text-2xl cursor-pointer ${iconDisplay}`}
         ></div>
         <div
           onClick={() => navigate("/")}
-          className="text-2xl font-bold cursor-pointer"
+          className={`text-2xl font-bold cursor-pointer`}
         >
           <span className="uppercase">Movie</span>{" "}
           <span className="text-primary uppercase">Library</span>
@@ -60,7 +69,7 @@ function App() {
       </Routes>
       <aside
         id="aside"
-        className={`h-[100dvh] border bg-dark w-48 fixed inset-0 p-2  ${display} flex-col items-center gap-5 pt-10`}
+        className={`h-[100dvh] bg-dark w-48 fixed inset-0 p-2  ${asideDisplay} flex-col items-center gap-5 pt-10`}
       >
         <span id="aside" className={`font-bold text-sm`}>
           Hello, {cookie.username}

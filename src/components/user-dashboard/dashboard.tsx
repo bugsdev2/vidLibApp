@@ -19,11 +19,9 @@ export default function Dashboard() {
   // IF COOKIE NOT SAVED, RETURN TO LOGIN SCREEN
   useEffect(() => {
     if (cookie.username === undefined) navigate("/login");
-    axios
-      .get(`https://vidlibapp-api.onrender.com/check-user/${cookie.username}`)
-      .then((res) => {
-        console.log(res.data);
-      });
+    axios.get(
+      `https://vidlibapp-api.onrender.com/check-user/${cookie.username}`
+    );
   }, [cookie.username]);
 
   // TWO FOLLOWING FUNCTIONS HANDLE WHAT HAPPENS WHEN THE MOUSE HOVERS OVER THE CARDS
