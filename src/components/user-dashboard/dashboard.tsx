@@ -13,7 +13,7 @@ export default function Dashboard() {
   const [shader, setShader] = useState("bg-[rgba(0,0,0,0.3)] transition");
 
   const [categories, setCategories] = useState<
-    { name: "string"; category: "string" }[]
+    { name: "string"; category: "string"; id: "number" }[]
   >([]);
 
   // IF COOKIE NOT SAVED, RETURN TO LOGIN SCREEN
@@ -54,6 +54,7 @@ export default function Dashboard() {
         >
           {categories.map((category) => (
             <div
+              key={category.id}
               id="card"
               className="cursor-pointer grayscale hover:grayscale-0 h-fit"
             >

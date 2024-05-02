@@ -6,29 +6,32 @@ import LoginForm from "./components/loginform/loginform";
 import SignUpForm from "./components/signupform/signupform";
 import UserDashboard from "./components/user-dashboard/dashboard";
 import { useCookies } from "react-cookie";
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 function App() {
   const navigate = useNavigate();
-  const [display, setDisplay] = useState("none");
-  const displayRef = useRef<any>();
+  const [display, setDisplay] = useState("hidden");
   const [cookie, , removeCookie] = useCookies(["username"]);
 
   function handleLogOutClick() {
     if (cookie.username !== undefined || cookie.username !== "") {
       removeCookie("username");
-      setDisplay("none");
+      setDisplay("hidden");
     }
   }
   function handleMenuClick() {
     setDisplay("flex");
   }
 
-  document.body.addEventListener("click", () => {
-    if (displayRef.current.id === "menu" || displayRef.current.id === "aside") {
+  document.body.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (
+      (e.target as HTMLElement).id === "menu" ||
+      (e.target as HTMLElement).id === "aside"
+    ) {
       setDisplay("flex");
-    } else if (displayRef.current.id !== "aside") {
-      setDisplay("none");
+    } else if ((e.target as HTMLElement).id !== "aside") {
+      setDisplay("hidden");
     }
   });
 
@@ -57,13 +60,9 @@ function App() {
       </Routes>
       <aside
         id="aside"
-        className="h-[100dvh] bg-dark w-48 fixed inset-0 p-2 hidden flex-col items-center gap-5 pt-10"
+        className={`h-[100dvh] border bg-dark w-48 fixed inset-0 p-2  ${display} flex-col items-center gap-5 pt-10`}
       >
-        <span
-          id="aside"
-          ref={displayRef}
-          className={`font-bold text-sm ${display}`}
-        >
+        <span id="aside" className={`font-bold text-sm`}>
           Hello, {cookie.username}
         </span>
         <button onClick={handleLogOutClick} className="btn-outline">
