@@ -7,6 +7,8 @@ import SignUpForm from "./components/signupform/signupform";
 import UserDashboard from "./components/user-dashboard/dashboard";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
+import AdminLogin from "./components/admin/admin-login/admin-login";
+import Admin from "./components/admin/admin/admin";
 
 function App() {
   const navigate = useNavigate();
@@ -66,6 +68,8 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignUpForm />} />
         <Route path="/dashboard" element={<UserDashboard />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
       <aside
         id="aside"

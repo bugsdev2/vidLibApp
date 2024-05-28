@@ -1,39 +1,32 @@
-import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 
-export default function LoginForm() {
+export default function AdminLogin() {
   const navigate = useNavigate();
   const [cookie, setCookie] = useCookies(["username"]);
 
   useEffect(() => {
     if (cookie.username !== undefined) {
-      navigate("/dashboard");
+      navigate("/admin");
     }
   }, [cookie.username]);
 
   function handleSubmit(values: { username: string; password: string }) {
-    axios
-      .get(`https://vidlibapp-api.onrender.com/check-user/${values.username}`)
-      .then((res) => {
-        if (res.data === "") {
-          const err: string =
-            "Please create a new account to use Movie Library";
-          throw err;
-        }
-        if (values.password === res.data.password) {
-          setCookie("username", values.username);
-          navigate("/dashboard");
-        } else {
-          alert("Entered the wrong password. Please try again");
-        }
-      })
-      .catch((err) => {
-        err.message && alert(err);
-      });
+    axios.get("https://vidlibapp-api.onrender.com/get-admin").then((res) => {
+      if (
+        res.data.username === values.username &&
+        res.data.password === values.password
+      ) {
+        setCookie("username", values.username);
+        navigate("/admin");
+      } else {
+        alert("Invalid credentials. Please try again.");
+      }
+    });
   }
   return (
     <>
@@ -55,16 +48,12 @@ export default function LoginForm() {
               username: Yup.string()
                 .required("*Please enter a user name")
                 .matches(/^[a-z]\D+/, "*Please start with a lowercase letter")
-                .min(6, "*User name should be more than 6 letters")
+                .min(5, "*User name should be more than 6 letters")
                 .max(15, "*User name should be less than 15 letters"),
               password: Yup.string()
                 .required("*Please enter a password")
                 .min(6, "*Password should be more than 6 letters")
-                .max(20, "*Password should be less than 20 letters")
-                .matches(
-                  /(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])\w{6,20}/,
-                  "*Password should have at least one capital letter, one small letter and one number"
-                ),
+                .max(20, "*Password should be less than 20 letters"),
             })}
           >
             <Form
@@ -73,7 +62,7 @@ export default function LoginForm() {
               className="rounded-md flex mt-36 flex-col gap-2.5"
             >
               <div id="shader"></div>
-              <div className="text-lightred">Login to your Account</div>
+              <div className="text-lightred">Admin Login</div>
 
               <div className="flex flex-col sm:grid grid-cols-2 gap-2 justify-between">
                 <label htmlFor="username">User Name</label>
@@ -103,14 +92,6 @@ export default function LoginForm() {
                 <button type="submit" className="btn mt-3">
                   Login
                 </button>
-                <div>
-                  <small>
-                    <Link to="/signup" className="text-primary">
-                      Click here
-                    </Link>{" "}
-                    to create a new account
-                  </small>
-                </div>
               </div>
             </Form>
           </Formik>
