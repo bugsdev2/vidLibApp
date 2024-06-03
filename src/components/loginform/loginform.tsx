@@ -11,7 +11,11 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (cookie.username !== undefined) {
-      navigate("/dashboard");
+      if (cookie.username === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
     }
   }, [cookie.username]);
 
@@ -32,7 +36,7 @@ export default function LoginForm() {
         }
       })
       .catch((err) => {
-        err.message && alert(err);
+        alert(err) && alert(err.message);
       });
   }
   return (

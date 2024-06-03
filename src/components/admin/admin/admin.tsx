@@ -14,8 +14,20 @@ export default function Admin() {
   const [newCategoryDisplay, setNewCategoryDisplay] = useState("hidden");
   const categoryFormRef = useRef<any>(null);
 
+  interface Video {
+    title: string;
+    videoCode: string;
+    description: string;
+  }
+
+  interface Category {
+    id: string;
+    name: string;
+    category: string;
+  }
+
   useEffect(() => {
-    if (cookie.username === undefined) {
+    if (cookie.username !== "admin") {
       navigate("/admin-login");
     }
   }, [cookie.username]);
@@ -30,7 +42,7 @@ export default function Admin() {
     axios.get("https:vidlibapp-api.onrender.com/get-videos").then((res) => {
       setVideosList(res.data);
     });
-  }, []);
+  }, [videosList]);
 
   function handleVideoSubmit(values: {}, resetForm: any) {
     console.log(values);
@@ -78,20 +90,46 @@ export default function Admin() {
               id="category"
             >
               <option value="all">All</option>
-              {categories.map(
-                (category: { id: string; name: string; category: string }) => {
-                  return (
-                    <option key={category.id} value={category.category}>
-                      {category.name}
-                    </option>
-                  );
-                }
-              )}
+              {categories.map((category: Category) => {
+                return (
+                  <option key={category.id} value={category.category}>
+                    {category.name}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </section>
-        <section className="w-full  grid grid-cols-2">
-          <div></div>
+        <section>
+          <div>
+            {videosList.map((video: Video) => {
+              return (
+                <div className="grid grid-cols-2 mb-4">
+                  <div className="flex flex-col items-center justify-stretch">
+                    <div className="text-xl text-primary mb-4">
+                      {video.title}
+                    </div>
+                    <div>
+                      {categories.find((item) => {
+                        return item === "balumahendra";
+                      })}
+                    </div>
+                    <iframe
+                      className="text-center"
+                      // width="560"
+                      // height="315"
+                      src={`https://www.youtube.com/embed/${video.videoCode}`}
+                      title={`${video.title}`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen="true"
+                    ></iframe>
+                  </div>
+                  <div>{video.description}</div>
+                </div>
+              );
+            })}
+          </div>
         </section>
       </main>
       {/* THIS SECTION BELOW CONATAINS THE DIFFERENT MODALS USED IN THE CURRENT SLICE */}
@@ -100,7 +138,7 @@ export default function Admin() {
       <div
         className={`fixed inset-0 ${modalDisplay} justify-center items-center`}
       >
-        <div className="relative">
+        <div className="relative bg-dark">
           <Formik
             initialValues={{
               title: "",

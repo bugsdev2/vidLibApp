@@ -9,7 +9,11 @@ export default function LoginScreen() {
 
   useEffect(() => {
     if (cookie.username !== undefined) {
-      navigate("/dashboard");
+      if (cookie.username === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
     }
   }, [cookie.username]);
 

@@ -18,7 +18,8 @@ export default function Dashboard() {
 
   // IF COOKIE NOT SAVED, RETURN TO LOGIN SCREEN
   useEffect(() => {
-    if (cookie.username === undefined) navigate("/login");
+    if (cookie.username === undefined || cookie.username === "admin")
+      navigate("/login");
     axios.get(
       `https://vidlibapp-api.onrender.com/check-user/${cookie.username}`
     );

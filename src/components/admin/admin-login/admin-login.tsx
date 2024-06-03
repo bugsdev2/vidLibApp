@@ -10,7 +10,7 @@ export default function AdminLogin() {
   const [cookie, setCookie] = useCookies(["username"]);
 
   useEffect(() => {
-    if (cookie.username !== undefined) {
+    if (cookie.username === "admin") {
       navigate("/admin");
     }
   }, [cookie.username]);
