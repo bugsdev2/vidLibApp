@@ -36,7 +36,7 @@ export default function LoginForm() {
         }
       })
       .catch((err) => {
-        alert(err) && alert(err.message);
+        alert(err)! || alert(err.message);
       });
   }
   return (
