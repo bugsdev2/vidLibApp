@@ -103,47 +103,49 @@ export default function Admin() {
       });
   }
 
-  const videos = videosList.map((video: Video) => {
-    let description: string | null = null;
+  const videos = videosList
+    ? videosList.map((video: Video) => {
+        let description: string | null = null;
 
-    if (video.description.length > 100) {
-      description = video.description.slice(0, 350);
-      description += "...";
-    }
-    let directorName: string | null = null;
-    categories.map((category: Category) => {
-      if (category.category === video.category) {
-        directorName = category.name;
-      }
-    });
-    return (
-      <div className="flex flex-col border mb-4 p-4">
-        <div
-          onClick={() => handleDeleteVideo(video)}
-          className="bi bi-x w-7 place-self-end cursor-pointer text-center rounded-full border hover:border-yellow-500 hover:text-yellow-500"
-        ></div>
-        <div className="flex flex-col items-center justify-stretch">
-          <div className="text-2xl text-center font-bold uppercase tracking-widest text-primary">
-            {video.title}
+        if (video.description.length > 100) {
+          description = video.description.slice(0, 350);
+          description += "...";
+        }
+        let directorName: string | null = null;
+        categories.map((category: Category) => {
+          if (category.category === video.category) {
+            directorName = category.name;
+          }
+        });
+        return (
+          <div className="flex flex-col border mb-4 p-4">
+            <div
+              onClick={() => handleDeleteVideo(video)}
+              className="bi bi-x w-7 place-self-end cursor-pointer text-center rounded-full border hover:border-yellow-500 hover:text-yellow-500"
+            ></div>
+            <div className="flex flex-col items-center justify-stretch">
+              <div className="text-2xl text-center font-bold uppercase tracking-widest text-primary">
+                {video.title}
+              </div>
+              <div className="mb-3">A film by {directorName}</div>
+              <iframe
+                className="text-center"
+                width="250"
+                height="115"
+                src={`https://www.youtube.com/embed/${video.videoCode}`}
+                title={`${video.title}`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <div title={video.description} className="mt-4 text-sm">
+              {description}
+            </div>
           </div>
-          <div className="mb-3">A film by {directorName}</div>
-          <iframe
-            className="text-center"
-            width="250"
-            height="115"
-            src={`https://www.youtube.com/embed/${video.videoCode}`}
-            title={`${video.title}`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
-          ></iframe>
-        </div>
-        <div title={video.description} className="mt-4 text-sm">
-          {description}
-        </div>
-      </div>
-    );
-  });
+        );
+      })
+    : null;
 
   return (
     <>
