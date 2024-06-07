@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, ChangeEvent } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
@@ -13,11 +13,14 @@ export default function Admin() {
   const [modalDisplay, setModalDisplay] = useState("hidden");
   const [newCategoryDisplay, setNewCategoryDisplay] = useState("hidden");
   const categoryFormRef = useRef<any>(null);
+  const selectRef = useRef<any>(null);
 
   interface Video {
+    id: number;
     title: string;
     videoCode: string;
     description: string;
+    category: string;
   }
 
   interface Category {
@@ -39,9 +42,13 @@ export default function Admin() {
   }, [categories]);
 
   useEffect(() => {
-    axios.get("https:vidlibapp-api.onrender.com/get-videos").then((res) => {
-      setVideosList(res.data);
-    });
+    axios
+      .get(
+        `https:vidlibapp-api.onrender.com/get-videos/${selectRef.current.value}`
+      )
+      .then((res) => {
+        setVideosList(res.data);
+      });
   }, [videosList]);
 
   function handleVideoSubmit(values: {}, resetForm: any) {
@@ -74,6 +81,70 @@ export default function Admin() {
     }
   }
 
+  function handleDeleteVideo(video: Video) {
+    if (confirm("Do you want to delete the video?")) {
+      let id = video.id;
+      axios
+        .delete(`http://vidlibapp-api.onrender.com/delete-video/${id}`)
+        .then(() => {
+          alert("Video Succesfully Deleted");
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    }
+  }
+
+  function handleVideoFilter(e: ChangeEvent<HTMLSelectElement>) {
+    axios
+      .get(`https:vidlibapp-api.onrender.com/get-videos/${e.target.value}`)
+      .then((res) => {
+        setVideosList(res.data);
+      });
+  }
+
+  const videos = videosList.map((video: Video) => {
+    let description: string | null = null;
+
+    if (video.description.length > 100) {
+      description = video.description.slice(0, 350);
+      description += "...";
+    }
+    let directorName: string | null = null;
+    categories.map((category: Category) => {
+      if (category.category === video.category) {
+        directorName = category.name;
+      }
+    });
+    return (
+      <div className="flex flex-col border mb-4 p-4">
+        <div
+          onClick={() => handleDeleteVideo(video)}
+          className="bi bi-x w-7 place-self-end cursor-pointer text-center rounded-full border hover:border-yellow-500 hover:text-yellow-500"
+        ></div>
+        <div className="flex flex-col items-center justify-stretch">
+          <div className="text-2xl text-center font-bold uppercase tracking-widest text-primary">
+            {video.title}
+          </div>
+          <div className="mb-3">A film by {directorName}</div>
+          <iframe
+            className="text-center"
+            width="250"
+            height="115"
+            src={`https://www.youtube.com/embed/${video.videoCode}`}
+            title={`${video.title}`}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen="true"
+          ></iframe>
+        </div>
+        <div title={video.description} className="mt-4 text-sm">
+          {description}
+        </div>
+      </div>
+    );
+  });
+
   return (
     <>
       <main className="flex flex-col items-center gap-3">
@@ -85,9 +156,11 @@ export default function Admin() {
         <section className="">
           <div>
             <select
+              ref={selectRef}
               className="text-dark px-2 rounded py-1"
               name="category"
               id="category"
+              onChange={(e) => handleVideoFilter(e)}
             >
               <option value="all">All</option>
               {categories.map((category: Category) => {
@@ -101,34 +174,8 @@ export default function Admin() {
           </div>
         </section>
         <section>
-          <div>
-            {videosList.map((video: Video) => {
-              return (
-                <div className="grid grid-cols-2 mb-4">
-                  <div className="flex flex-col items-center justify-stretch">
-                    <div className="text-xl text-primary mb-4">
-                      {video.title}
-                    </div>
-                    <div>
-                      {categories.find((item) => {
-                        return item === "balumahendra";
-                      })}
-                    </div>
-                    <iframe
-                      className="text-center"
-                      // width="560"
-                      // height="315"
-                      src={`https://www.youtube.com/embed/${video.videoCode}`}
-                      title={`${video.title}`}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allowFullScreen="true"
-                    ></iframe>
-                  </div>
-                  <div>{video.description}</div>
-                </div>
-              );
-            })}
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
+            {videos}
           </div>
         </section>
       </main>
@@ -196,19 +243,13 @@ export default function Admin() {
                     id="category"
                   >
                     <option value="">Select Category</option>
-                    {categories.map(
-                      (category: {
-                        id: string;
-                        name: string;
-                        category: string;
-                      }) => {
-                        return (
-                          <option key={category.id} value={category.category}>
-                            {category.name}
-                          </option>
-                        );
-                      }
-                    )}
+                    {categories.map((category: Category) => {
+                      return (
+                        <option key={category.id} value={category.category}>
+                          {category.name}
+                        </option>
+                      );
+                    })}
                   </Field>
                   <span
                     className="bi bi-plus-circle text-white cursor-pointer"

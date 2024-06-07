@@ -5,16 +5,20 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
+  interface Category {
+    name: "string";
+    category: "string";
+    id: "number";
+  }
+
   const [cookie, ,] = useCookies(["username"]);
 
   const navigate = useNavigate();
 
   const [zoom, setZoom] = useState("");
-  const [shader, setShader] = useState("bg-[rgba(0,0,0,0.3)] transition");
+  const [shader, setShader] = useState("bg-[rgba(0,0,0,0.4)] transition");
 
-  const [categories, setCategories] = useState<
-    { name: "string"; category: "string"; id: "number" }[]
-  >([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   // IF COOKIE NOT SAVED, RETURN TO LOGIN SCREEN
   useEffect(() => {
@@ -28,7 +32,7 @@ export default function Dashboard() {
   // TWO FOLLOWING FUNCTIONS HANDLE WHAT HAPPENS WHEN THE MOUSE HOVERS OVER THE CARDS
   function handleMouseOver() {
     setZoom("scale-150 transition duration-500");
-    setShader("bg-[rgba(0,0,0,0.6)] transition");
+    setShader("bg-[rgba(0,0,0,0.2)] transition");
   }
 
   function handleMouseOut() {
@@ -44,6 +48,10 @@ export default function Dashboard() {
         setCategories(response.data);
       });
   }, [categories]);
+
+  function handleCategorySelect(category: Category) {
+    console.log(category.category);
+  }
   return (
     <>
       <main>
@@ -59,7 +67,8 @@ export default function Dashboard() {
             >
               <div
                 id="card-img-container"
-                className="w-72 h-40 border overflow-hidden rounded-xl relative  hover:border-yellow-500"
+                onClick={() => handleCategorySelect(category)}
+                className="w-72 h-40 border overflow-hidden rounded-xl relative hover:border-yellow-500 "
               >
                 <img
                   id="image"
@@ -73,7 +82,7 @@ export default function Dashboard() {
                   onMouseOut={() => handleMouseOut()}
                   className={`${shader} inset-0 absolute`}
                 >
-                  <span className="text-xl flex justify-center items-center h-full font-bold hover:text-yellow-500 select-none active:">
+                  <span className="text-xl text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold select-none ">
                     {category.name}
                   </span>
                 </div>
