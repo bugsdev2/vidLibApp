@@ -162,7 +162,9 @@ export default function Admin() {
               id="category"
               onChange={(e) => handleVideoFilter(e)}
             >
-              <option value="all">All</option>
+              <option selected value="all">
+                All
+              </option>
               {categories.map((category: Category) => {
                 return (
                   <option key={category.id} value={category.category}>
