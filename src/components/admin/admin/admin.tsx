@@ -135,7 +135,7 @@ export default function Admin() {
             title={`${video.title}`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen="true"
+            allowFullScreen
           ></iframe>
         </div>
         <div title={video.description} className="mt-4 text-sm">
