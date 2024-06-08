@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 export default function VideosPage() {
   const { categoryName } = useContext(Context);
   const [videosList, setVideosList] = useState([]);
-  const [cookie, setCookie, removeCookie] = useCookies(["username"]);
+  const [cookie, ,] = useCookies(["username"]);
   const navigate = useNavigate();
   interface Video {
     id: number;
