@@ -28,7 +28,7 @@ export default function VideosPage() {
 
   useEffect(() => {
     axios
-      .get(`http://vidlibapp-api.onrender.com/get-videos/${categoryName}`)
+      .get(`https://vidlibapp-api.onrender.com/get-videos/${categoryName}`)
       .then((res) => {
         setVideosList(res.data);
       });

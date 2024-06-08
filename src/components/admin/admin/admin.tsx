@@ -85,7 +85,7 @@ export default function Admin() {
     if (confirm("Do you want to delete the video?")) {
       let id = video.id;
       axios
-        .delete(`http://vidlibapp-api.onrender.com/delete-video/${id}`)
+        .delete(`https://vidlibapp-api.onrender.com/delete-video/${id}`)
         .then(() => {
           console.log("Video Deleted Successfully");
         })
