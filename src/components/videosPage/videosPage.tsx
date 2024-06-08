@@ -1,11 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../../App";
 import axios from "axios";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 export default function VideosPage() {
   const { categoryName } = useContext(Context);
   const [videosList, setVideosList] = useState([]);
-
+  const [cookie, setCookie, removeCookie] = useCookies(["username"]);
+  const navigate = useNavigate();
   interface Video {
     id: number;
     title: string;
@@ -13,6 +16,15 @@ export default function VideosPage() {
     description: string;
     category: string;
   }
+
+  // IF COOKIE NOT SAVED, RETURN TO LOGIN SCREEN
+  useEffect(() => {
+    if (cookie.username === undefined || cookie.username === "admin")
+      navigate("/login");
+    axios.get(
+      `https://vidlibapp-api.onrender.com/check-user/${cookie.username}`
+    );
+  }, [cookie.username]);
 
   useEffect(() => {
     axios
