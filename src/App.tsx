@@ -9,12 +9,24 @@ import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import AdminLogin from "./components/admin/admin-login/admin-login";
 import Admin from "./components/admin/admin/admin";
+import VideosPage from "./components/videosPage/videosPage";
+import React from "react";
+
+export interface GlobalContent {
+  categoryName: string;
+  setCategoryName: (item: string) => void;
+}
+export const Context = React.createContext<GlobalContent>({
+  categoryName: "all",
+  setCategoryName: () => {},
+});
 
 function App() {
   const navigate = useNavigate();
   const [asideDisplay, setAsideDisplay] = useState("hidden");
   const [iconDisplay, setIconDisplay] = useState("invisible");
   const [cookie, , removeCookie] = useCookies(["username"]);
+  const [categoryName, setCategoryName] = useState("");
 
   function handleLogOutClick() {
     if (cookie.username !== undefined || cookie.username !== "") {
@@ -63,14 +75,18 @@ function App() {
         </div>
         <div className="bi bi-person text-2xl cursor-pointer invisible"></div>
       </header>
-      <Routes>
-        <Route path="/" element={<LoginScreen />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/signup" element={<SignUpForm />} />
-        <Route path="/dashboard" element={<UserDashboard />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/admin" element={<Admin />} />
-      </Routes>
+      <Context.Provider value={{ categoryName, setCategoryName }}>
+        <Routes>
+          <Route path="/" element={<LoginScreen />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/signup" element={<SignUpForm />} />
+          <Route path="/dashboard" element={<UserDashboard />} />
+          <Route path="/videos-page" element={<VideosPage />} />
+          <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/admin" element={<Admin />} />
+        </Routes>
+      </Context.Provider>
+
       <aside
         id="aside"
         className={`h-[100dvh] bg-dark w-48 fixed inset-0 p-2  ${asideDisplay} flex-col items-center gap-5 pt-10`}

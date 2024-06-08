@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import "./dashboard.css";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { Context } from "../../App";
 
 export default function Dashboard() {
   interface Category {
@@ -10,6 +11,8 @@ export default function Dashboard() {
     category: "string";
     id: "number";
   }
+
+  const { categoryName, setCategoryName } = useContext(Context);
 
   const [cookie, ,] = useCookies(["username"]);
 
@@ -50,7 +53,8 @@ export default function Dashboard() {
   }, [categories]);
 
   function handleCategorySelect(category: Category) {
-    console.log(category.category);
+    setCategoryName(category.category);
+    navigate("/videos-page");
   }
   return (
     <>
