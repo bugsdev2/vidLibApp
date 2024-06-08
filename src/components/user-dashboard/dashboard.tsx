@@ -54,6 +54,7 @@ export default function Dashboard() {
 
   function handleCategorySelect(category: Category) {
     setCategoryName(category.category);
+    console.log(categoryName);
     navigate("/videos-page");
   }
   return (
