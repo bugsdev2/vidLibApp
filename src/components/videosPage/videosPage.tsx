@@ -7,8 +7,9 @@ import { useNavigate } from "react-router-dom";
 export default function VideosPage() {
   const { categoryName } = useContext(Context);
   const [videosList, setVideosList] = useState([]);
-  const [cookie, ,] = useCookies(["username"]);
+  const [cookie] = useCookies(["username"]);
   const navigate = useNavigate();
+
   interface Video {
     id: number;
     title: string;
@@ -19,20 +20,27 @@ export default function VideosPage() {
 
   // IF COOKIE NOT SAVED, RETURN TO LOGIN SCREEN
   useEffect(() => {
-    if (cookie.username === undefined || cookie.username === "admin")
+    if (
+      !cookie.username ||
+      cookie.username === undefined ||
+      cookie.username === "admin"
+    ) {
       navigate("/login");
-    axios.get(
-      `https://vidlibapp-api.onrender.com/check-user/${cookie.username}`
-    );
+    }
   }, [cookie.username]);
 
   useEffect(() => {
+    localStorage.setItem("category", categoryName);
     axios
-      .get(`https://vidlibapp-api.onrender.com/get-videos/${categoryName}`)
+      .get(
+        `https://vidlibapp-api.onrender.com/get-videos/${localStorage.getItem(
+          "category"
+        )}`
+      )
       .then((res) => {
         setVideosList(res.data);
       });
-  }, [videosList]);
+  }, []);
 
   const videos = videosList.map((video: Video) => {
     let description: string | null = null;

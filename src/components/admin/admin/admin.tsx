@@ -9,7 +9,7 @@ export default function Admin() {
   const navigate = useNavigate();
   const [cookie, ,] = useCookies(["username"]);
   const [categories, setCategories] = useState([]);
-  const [videosList, setVideosList] = useState([]);
+  const [videosList, setVideosList] = useState<Video[]>([]);
   const [modalDisplay, setModalDisplay] = useState("hidden");
   const [newCategoryDisplay, setNewCategoryDisplay] = useState("hidden");
   const categoryFormRef = useRef<any>(null);

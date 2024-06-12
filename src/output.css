@@ -1116,9 +1116,3 @@ video {
     padding-inline-end: 0.75rem;
   }
 }
-
-@media (min-width: 1024px) {
-  .lg\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
