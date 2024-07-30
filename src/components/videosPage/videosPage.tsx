@@ -3,20 +3,13 @@ import { Context } from "../../App";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { Video } from "../admin/admin/admin";
 
 export default function VideosPage() {
   const { categoryName } = useContext(Context);
-  const [videosList, setVideosList] = useState([]);
-  const [cookie] = useCookies(["username"]);
+  const [videosList, setVideosList] = useState<Video[]>([]);
+  const [cookie] = useCookies<string>(["username"]);
   const navigate = useNavigate();
-
-  interface Video {
-    id: number;
-    title: string;
-    videoCode: string;
-    description: string;
-    category: string;
-  }
 
   // IF COOKIE NOT SAVED, RETURN TO LOGIN SCREEN
   useEffect(() => {
@@ -32,17 +25,14 @@ export default function VideosPage() {
   useEffect(() => {
     localStorage.setItem("category", categoryName);
     axios
-      .get(
-        `https://vidlibapp-api.onrender.com/get-videos/${localStorage.getItem(
-          "category"
-        )}`
-      )
+      .get(`https://vidlibapp-api.onrender.com/get-videos/${categoryName}`)
       .then((res) => {
         setVideosList(res.data);
+        console.log(videosList);
       });
   }, []);
 
-  const videos = videosList.map((video: Video) => {
+  const videos = videosList.map(function (video: Video) {
     let description: string | null = null;
 
     if (video.description.length > 100) {

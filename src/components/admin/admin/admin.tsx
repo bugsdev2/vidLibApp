@@ -5,6 +5,20 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
+export interface Video {
+  id: number;
+  title: string;
+  videoCode: string;
+  description: string;
+  category: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  category: string;
+}
+
 export default function Admin() {
   const navigate = useNavigate();
   const [cookie, ,] = useCookies(["username"]);
@@ -14,20 +28,6 @@ export default function Admin() {
   const [newCategoryDisplay, setNewCategoryDisplay] = useState("hidden");
   const categoryFormRef = useRef<any>(null);
   const selectRef = useRef<any>(null);
-
-  interface Video {
-    id: number;
-    title: string;
-    videoCode: string;
-    description: string;
-    category: string;
-  }
-
-  interface Category {
-    id: string;
-    name: string;
-    category: string;
-  }
 
   useEffect(() => {
     if (cookie.username !== "admin") {
@@ -119,6 +119,7 @@ export default function Admin() {
     return (
       <div className="flex flex-col bg-[rgba(355,355,355,0.1)] hover:bg-[rgba(355,355,355,0.13)] rounded-md mb-4 p-4">
         <div
+          key={video.id}
           onClick={() => handleDeleteVideo(video)}
           className="bi bi-x text-sm btn-outline border-none p-0 w-5 text-center place-self-end cursor-pointer rounded-full"
         ></div>
@@ -162,9 +163,7 @@ export default function Admin() {
               id="category"
               onChange={(e) => handleVideoFilter(e)}
             >
-              <option selected value="all">
-                All
-              </option>
+              <option value="all">All</option>
               {categories.map((category: Category) => {
                 return (
                   <option key={category.id} value={category.category}>
@@ -220,12 +219,13 @@ export default function Admin() {
                 name="title"
                 component="small"
               />
-              <div className="flex justify-between gap-2">
+              <div className="flex justify-between gap-2 h-24">
                 <label htmlFor="description">Description</label>
                 <Field
                   className="bg-dark border rounded-lg px-2"
                   name="description"
                   id="description"
+                  component="textarea"
                 ></Field>
               </div>
               <ErrorMessage
