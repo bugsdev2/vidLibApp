@@ -49,8 +49,8 @@ export default function LoginForm() {
           <div id="shader"></div>
           <Formik
             initialValues={{
-              username: "",
-              password: "",
+              username: "test_user",
+              password: "Password123",
             }}
             onSubmit={(values) => {
               handleSubmit(values);
