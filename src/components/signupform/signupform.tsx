@@ -2,8 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+
+import "../loader/loader.css";
 
 interface SignUpValueObject {
   fullname: string;
@@ -15,6 +17,7 @@ interface SignUpValueObject {
 export default function SignUpForm() {
   const navigate = useNavigate();
 
+  const [loader, setLoader] = useState("hidden");
   const [cookie, ,] = useCookies(["username"]);
 
   useEffect(() => {
@@ -24,21 +27,25 @@ export default function SignUpForm() {
   }, [cookie.username]);
 
   function handleSubmit(values: SignUpValueObject) {
+    setLoader("block");
     let usernamePrev: string;
     axios
       .get(`https://vidlibapp-api.onrender.com/check-user/${values.username}`)
       .then((response) => {
         usernamePrev = response.data.username;
         if (values.username === usernamePrev) {
+          setLoader("hidden");
           alert("Username already exists. Please choose another one");
         } else {
           axios
             .post("https://vidlibapp-api.onrender.com/add-user", values)
             .then(() => {
+              setLoader("hidden");
               console.log("User Added");
               navigate("/login");
             })
             .catch((err) => {
+              setLoader("hidden");
               console.log("Error: ", err.message);
             });
         }
@@ -46,6 +53,11 @@ export default function SignUpForm() {
   }
   return (
     <>
+      <div
+        className={`${loader} p-2 bg-black opacity-90 shadow-[0_0_0_1000px_black] rounded fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
+      >
+        <div className="loader"></div>
+      </div>
       <div className="text-light text-center h-[88dvh]">
         <section
           id="banner"

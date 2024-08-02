@@ -3,11 +3,15 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+import "../loader/loader.css";
 
 export default function LoginForm() {
   const navigate = useNavigate();
   const [cookie, setCookie] = useCookies(["username"]);
+
+  const [loader, setLoader] = useState("hidden");
 
   useEffect(() => {
     if (cookie.username !== undefined) {
@@ -20,18 +24,22 @@ export default function LoginForm() {
   }, [cookie.username]);
 
   function handleSubmit(values: { username: string; password: string }) {
+    setLoader("block");
     axios
       .get(`https://vidlibapp-api.onrender.com/check-user/${values.username}`)
       .then((res) => {
         if (res.data === "") {
+          setLoader("hidden");
           const err: string =
             "Please create a new account to use Movie Library";
           throw err;
         }
         if (values.password === res.data.password) {
+          setLoader("hidden");
           setCookie("username", values.username);
           navigate("/dashboard");
         } else {
+          setLoader("hidden");
           alert("Entered the wrong password. Please try again");
         }
       })
@@ -41,6 +49,11 @@ export default function LoginForm() {
   }
   return (
     <>
+      <div
+        className={`${loader} p-2 bg-black opacity-90 shadow-[0_0_0_1000px_black] rounded fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
+      >
+        <div className="loader"></div>
+      </div>
       <div className="text-light text-center h-[88dvh]">
         <section
           id="banner"
