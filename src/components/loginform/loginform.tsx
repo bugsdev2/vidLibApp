@@ -44,7 +44,8 @@ export default function LoginForm() {
         }
       })
       .catch((err) => {
-        alert(err)! || alert(err.message);
+        err.message ? alert(err.message) : alert(err);
+        setLoader("hidden");
       });
   }
   return (
