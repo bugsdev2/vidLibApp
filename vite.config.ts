@@ -6,6 +6,5 @@ export default defineConfig({
   plugins: [react()],
   build: {
     minify: false,
-    terserOptions: { compress: false, mangle: false },
   },
 });
