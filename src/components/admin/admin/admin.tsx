@@ -23,11 +23,11 @@ export default function Admin() {
   const navigate = useNavigate();
   const [cookie, ,] = useCookies(["username"]);
   const [categories, setCategories] = useState([]);
-  const [videosList, setVideosList] = useState<Video[]>();
+  const [videosList, setVideosList] = useState<Video[]>([]);
   const [modalDisplay, setModalDisplay] = useState("hidden");
   const [newCategoryDisplay, setNewCategoryDisplay] = useState("hidden");
   const categoryFormRef = useRef<any>(null);
-  const selectRef = useRef<any>(null);
+  const selectRef = useRef<any>({ current: "all" });
 
   useEffect(() => {
     if (cookie.username !== "admin") {
@@ -104,9 +104,9 @@ export default function Admin() {
   }
 
   const videos =
-    videosList!.length === 0
+    videosList.length === 0
       ? null
-      : videosList!.map((video: Video) => {
+      : videosList.map((video: Video) => {
           let description: string | null = null;
 
           if (video.description.length > 100) {
@@ -149,6 +149,8 @@ export default function Admin() {
           );
         });
 
+  console.log(selectRef);
+
   return (
     <>
       <main className="flex flex-col items-center gap-3">
@@ -166,7 +168,9 @@ export default function Admin() {
               id="category"
               onChange={(e) => handleVideoFilter(e)}
             >
-              <option value="all">All</option>
+              <option value="all" selected>
+                All
+              </option>
               {categories.map((category: Category) => {
                 return (
                   <option key={category.id} value={category.category}>
