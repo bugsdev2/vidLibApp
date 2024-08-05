@@ -23,7 +23,7 @@ export default function Admin() {
   const navigate = useNavigate();
   const [cookie, ,] = useCookies(["username"]);
   const [categories, setCategories] = useState([]);
-  const [videosList, setVideosList] = useState<Video[]>([]);
+  const [videosList, setVideosList] = useState<Video[]>();
   const [modalDisplay, setModalDisplay] = useState("hidden");
   const [newCategoryDisplay, setNewCategoryDisplay] = useState("hidden");
   const categoryFormRef = useRef<any>(null);
@@ -104,9 +104,9 @@ export default function Admin() {
   }
 
   const videos =
-    videosList.length === 0
+    videosList!.length === 0
       ? null
-      : videosList.map((video: Video) => {
+      : videosList!.map((video: Video) => {
           let description: string | null = null;
 
           if (video.description.length > 100) {
