@@ -30,7 +30,7 @@ export default function VideosPage() {
         setVideosList(res.data);
         console.log(videosList);
       });
-  }, []);
+  }, [categoryName]);
 
   const videos = videosList.map(function (video: Video) {
     let description: string | null = null;

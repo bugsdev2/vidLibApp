@@ -27,7 +27,6 @@ export default function Admin() {
   const [modalDisplay, setModalDisplay] = useState("hidden");
   const [newCategoryDisplay, setNewCategoryDisplay] = useState("hidden");
   const categoryFormRef = useRef<any>(null);
-  const selectRef = useRef<any>("all");
 
   useEffect(() => {
     if (cookie.username !== "admin") {
@@ -42,14 +41,10 @@ export default function Admin() {
   }, [categories]);
 
   useEffect(() => {
-    axios
-      .get(
-        `https:vidlibapp-api.onrender.com/get-videos/${selectRef.current.value}`
-      )
-      .then((res) => {
-        setVideosList(res.data);
-      });
-  }, [videosList]);
+    axios.get(`https:vidlibapp-api.onrender.com/get-videos/all`).then((res) => {
+      setVideosList(res.data);
+    });
+  }, []);
 
   function handleVideoSubmit(values: {}, resetForm: any) {
     console.log(values);
@@ -149,8 +144,6 @@ export default function Admin() {
           );
         });
 
-  console.log(selectRef);
-
   return (
     <>
       <main className="flex flex-col items-center gap-3">
@@ -159,10 +152,9 @@ export default function Admin() {
             Add New Video
           </button>
         </section>
-        <section className="">
+        <section>
           <div>
             <select
-              ref={selectRef}
               className="text-dark px-2 rounded py-1"
               name="category"
               id="category"
