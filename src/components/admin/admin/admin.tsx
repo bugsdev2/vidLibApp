@@ -27,7 +27,7 @@ export default function Admin() {
   const [modalDisplay, setModalDisplay] = useState("hidden");
   const [newCategoryDisplay, setNewCategoryDisplay] = useState("hidden");
   const categoryFormRef = useRef<any>(null);
-  const selectRef = useRef<any>({ current: "all" });
+  const selectRef = useRef<any>("all");
 
   useEffect(() => {
     if (cookie.username !== "admin") {
