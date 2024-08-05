@@ -1,3 +1,4 @@
+"use strict";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useEffect, useState, useRef, ChangeEvent } from "react";
@@ -98,52 +99,6 @@ export default function Admin() {
       });
   }
 
-  const videos =
-    videosList.length === 0
-      ? null
-      : videosList.map((video: Video) => {
-          let description: string | null = null;
-
-          if (video.description.length > 100) {
-            description = video.description.slice(0, 350);
-            description += "...";
-          }
-          let directorName: string | null = null;
-          categories.map((category: Category) => {
-            if (category.category === video.category) {
-              directorName = category.name;
-            }
-          });
-          return (
-            <div className="flex flex-col bg-[rgba(355,355,355,0.1)] hover:bg-[rgba(355,355,355,0.13)] rounded-md mb-4 p-4">
-              <div
-                key={video.id}
-                onClick={() => handleDeleteVideo(video)}
-                className="bi bi-x text-sm btn-outline border-none p-0 w-5 text-center place-self-end cursor-pointer rounded-full"
-              ></div>
-              <div className="flex flex-col  justify-stretch">
-                <div className="text-2xl text-center font-bold uppercase tracking-widest text-primary">
-                  {video.title}
-                </div>
-                <div className="mb-3 text-center">A film by {directorName}</div>
-                <iframe
-                  className="text-center border"
-                  // width="250"
-                  // height="115"
-                  src={`https://www.youtube.com/embed/${video.videoCode}`}
-                  title={`${video.title}`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div title={video.description} className="mt-4 text-sm">
-                {description}
-              </div>
-            </div>
-          );
-        });
-
   return (
     <>
       <main className="flex flex-col items-center gap-3">
@@ -155,14 +110,13 @@ export default function Admin() {
         <section>
           <div>
             <select
+              defaultValue={"all"}
               className="text-dark px-2 rounded py-1"
               name="category"
               id="category"
               onChange={(e) => handleVideoFilter(e)}
             >
-              <option value="all" selected>
-                All
-              </option>
+              <option value="all">All</option>
               {categories.map((category: Category) => {
                 return (
                   <option key={category.id} value={category.category}>
@@ -175,7 +129,52 @@ export default function Admin() {
         </section>
         <section>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
-            {videos}
+            {videosList.length === 0
+              ? null
+              : videosList.map((video: Video) => {
+                  let description: string | null = null;
+                  if (video.description.length > 100) {
+                    description = video.description.slice(0, 350);
+                    description += "...";
+                  }
+                  let directorName: string | null = null;
+                  categories.map((category: Category) => {
+                    if (category.category === video.category) {
+                      directorName = category.name;
+                    }
+                  });
+                  return (
+                    <div className="flex flex-col bg-[rgba(355,355,355,0.1)] hover:bg-[rgba(355,355,355,0.13)] rounded-md mb-4 p-4">
+                      <div
+                        key={video.id}
+                        onClick={() => handleDeleteVideo(video)}
+                        className="bi bi-x text-sm btn-outline border-none p-0 w-5 text-center place-self-end cursor-pointer rounded-full"
+                      ></div>
+                      <div className="flex flex-col  justify-stretch">
+                        <div className="text-2xl text-center font-bold uppercase tracking-widest text-primary">
+                          {video.title}
+                        </div>
+                        <div className="mb-3 text-center">
+                          A film by {directorName}
+                        </div>
+                        <iframe
+                          loading="lazy"
+                          className="text-center border"
+                          // width="250"
+                          // height="115"
+                          src={`https://www.youtube.com/embed/${video.videoCode}`}
+                          title={`${video.title}`}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                      <div title={video.description} className="mt-4 text-sm">
+                        {description}
+                      </div>
+                    </div>
+                  );
+                })}
           </div>
         </section>
       </main>
