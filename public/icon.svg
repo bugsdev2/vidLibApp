@@ -23,14 +23,14 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="1.4666941"
-     inkscape:cx="97.498173"
-     inkscape:cy="128.17942"
-     inkscape:window-width="1366"
-     inkscape:window-height="700"
-     inkscape:window-x="0"
-     inkscape:window-y="31"
-     inkscape:window-maximized="1"
+     inkscape:zoom="1.0371094"
+     inkscape:cx="67.495292"
+     inkscape:cy="136.43691"
+     inkscape:window-width="1024"
+     inkscape:window-height="515"
+     inkscape:window-x="164"
+     inkscape:window-y="106"
+     inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
   <defs
      id="defs2">
@@ -84,7 +84,10 @@
        style="fill:#c83737;stroke-width:0.264583"
        d="M 12.651892,7.130163 A 6.3499999,6.3499999 0 0 1 5.5885496,12.65418 6.3499999,6.3499999 0 0 1 0.04358652,5.6072691 6.3499999,6.3499999 0 0 1 7.0740046,0.04140926 6.3499999,6.3499999 0 0 1 12.660712,7.0552722"
        clip-path="url(#clipPath713)"
-       transform="matrix(5.3333336,0,0,5.3333337,-4.4998758e-7,-1.5533431e-6)" />
+       transform="matrix(5.3333336,0,0,5.3333337,-4.4998758e-7,-1.5533431e-6)"
+       inkscape:export-filename="path576.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
     <g
        id="g237"
        style="fill:#ffffff"

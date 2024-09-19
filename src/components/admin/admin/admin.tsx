@@ -101,14 +101,14 @@ export default function Admin() {
   const videos =
     videosList.length === 0
       ? null
-      : videosList.map((video: Video) => {
+      : videosList?.map((video: Video) => {
           let description: string | null = null;
           if (video.description.length > 100) {
             description = video.description.slice(0, 350);
             description += "...";
           }
           let directorName: string | null = null;
-          categories.map((category: Category) => {
+          categories?.map((category: Category) => {
             if (category.category === video.category) {
               directorName = category.name;
             }
@@ -164,7 +164,7 @@ export default function Admin() {
               onChange={(e) => handleVideoFilter(e)}
             >
               <option value="all">All</option>
-              {categories.map((category: Category) => {
+              {categories?.map((category: Category) => {
                 return (
                   <option key={category.id} value={category.category}>
                     {category.name}
@@ -245,7 +245,7 @@ export default function Admin() {
                     id="category"
                   >
                     <option value="">Select Category</option>
-                    {categories.map((category: Category) => {
+                    {categories?.map((category: Category) => {
                       return (
                         <option key={category.id} value={category.category}>
                           {category.name}
