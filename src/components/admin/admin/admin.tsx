@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useEffect, useState, useRef, ChangeEvent } from "react";
+import { useEffect, useState, useRef, ChangeEvent, useReducer } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
@@ -45,7 +45,7 @@ export default function Admin() {
     axios.get(`${OLD_URL}/get-videos/all`).then((res) => {
       setVideosList(res.data);
     });
-  }, [videosList]);
+  }, []);
 
   function handleVideoSubmit(values: {}, resetForm: any) {
     console.log(values);
@@ -59,6 +59,7 @@ export default function Admin() {
         console.log(err.message);
       });
     resetForm();
+    window.location.reload();
   }
 
   function handleNewCategory() {
@@ -88,6 +89,7 @@ export default function Admin() {
         .catch((err) => {
           alert(err.message);
         });
+      window.location.reload();
     }
   }
 
