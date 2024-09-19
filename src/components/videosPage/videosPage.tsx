@@ -32,11 +32,11 @@ export default function VideosPage() {
       });
   }, [categoryName]);
 
-  const videos = videosList.map(function (video: Video) {
+  const videos = videosList?.map(function (video: Video) {
     let description: string | null = null;
 
-    if (video.description.length > 100) {
-      description = video.description.slice(0, 350);
+    if (video.description!.length > 100) {
+      description = video.description!.slice(0, 350);
       description += "...";
     }
 
