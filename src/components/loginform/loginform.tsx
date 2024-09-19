@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
+import { OLD_URL } from "../../constants/expressUrl";
 
 import "../loader/loader.css";
 
@@ -26,7 +27,7 @@ export default function LoginForm() {
   function handleSubmit(values: { username: string; password: string }) {
     setLoader("block");
     axios
-      .get(`https://vidlibapp-api.onrender.com/check-user/${values.username}`)
+      .get(`${OLD_URL}/check-user/${values.username}`)
       .then((res) => {
         if (res.data === "") {
           setLoader("hidden");

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../App";
+import { OLD_URL } from "../../constants/expressUrl";
 
 export default function Dashboard() {
   interface Category {
@@ -43,11 +44,9 @@ export default function Dashboard() {
 
   // GETS CATEGORIES AND STORES IT IN A STATE VARIABLE
   useEffect(() => {
-    axios
-      .get("https://vidlibapp-api.onrender.com/categories")
-      .then((response) => {
-        setCategories(response.data);
-      });
+    axios.get(`${OLD_URL}/categories`).then((response) => {
+      setCategories(response.data);
+    });
   }, [categories]);
 
   function handleCategorySelect(category: Category) {

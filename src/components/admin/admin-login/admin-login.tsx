@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
+import { OLD_URL } from "../../../constants/expressUrl";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function AdminLogin() {
   }, [cookie.username]);
 
   function handleSubmit(values: { username: string; password: string }) {
-    axios.get("https://vidlibapp-api.onrender.com/get-admin").then((res) => {
+    axios.get(`${OLD_URL}/get-admin`).then((res) => {
       if (
         res.data.username === values.username &&
         res.data.password === values.password

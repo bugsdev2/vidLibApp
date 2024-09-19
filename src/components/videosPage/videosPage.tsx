@@ -4,6 +4,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { Video } from "../admin/admin/admin";
+import { OLD_URL } from "../../constants/expressUrl";
 
 export default function VideosPage() {
   const { categoryName } = useContext(Context);
@@ -24,11 +25,9 @@ export default function VideosPage() {
 
   useEffect(() => {
     localStorage.setItem("category", categoryName);
-    axios
-      .get(`https://vidlibapp-api.onrender.com/get-videos/${categoryName}`)
-      .then((res) => {
-        setVideosList(res.data);
-      });
+    axios.get(`${OLD_URL}/get-videos/${categoryName}`).then((res) => {
+      setVideosList(res.data);
+    });
   }, [categoryName]);
 
   const videos = videosList?.map(function (video: Video) {
