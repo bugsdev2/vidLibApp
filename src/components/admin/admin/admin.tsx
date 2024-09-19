@@ -6,11 +6,11 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 export interface Video {
-  id: number;
-  title: string;
-  videoCode: string;
-  description: string;
-  category: string;
+  id?: number;
+  title?: string;
+  videoCode?: string;
+  description?: string;
+  category?: string;
 }
 
 export interface Category {
@@ -23,7 +23,7 @@ export default function Admin() {
   const navigate = useNavigate();
   const [cookie, ,] = useCookies(["username"]);
   const [categories, setCategories] = useState([]);
-  const [videosList, setVideosList] = useState<Video[]>();
+  const [videosList, setVideosList] = useState<Video[]>([]);
   const [modalDisplay, setModalDisplay] = useState("hidden");
   const [newCategoryDisplay, setNewCategoryDisplay] = useState("hidden");
   const categoryFormRef = useRef<any>(null);
@@ -80,7 +80,7 @@ export default function Admin() {
     if (confirm("Do you want to delete the video?")) {
       let id = video.id;
       axios
-        .delete(`https://vidlibapp-api.onrender.com/delete-video/${id}`)
+        .delete(`http://vidlibapp-api.onrender.com/delete-video/${id}`)
         .then(() => {
           console.log("Video Deleted Successfully");
         })
@@ -92,19 +92,19 @@ export default function Admin() {
 
   function handleVideoFilter(e: ChangeEvent<HTMLSelectElement>) {
     axios
-      .get(`https://vidlibapp-api.onrender.com/get-videos/${e.target.value}`)
+      .get(`http://vidlibapp-api.onrender.com/get-videos/${e.target.value}`)
       .then((res) => {
         setVideosList(res.data);
       });
   }
 
-  const videos = videosList?.map((video: Video) => {
-    let description: string | null = null;
-    if (video.description.length > 100) {
-      description = video.description.slice(0, 350);
+  const videos = videosList?.map((video) => {
+    let description: string = "";
+    if (video.description!.length > 100) {
+      description = video.description!.slice(0, 350);
       description += "...";
     }
-    let directorName: string | null = null;
+    let directorName: string = "";
     categories?.map((category: Category) => {
       if (category.category === video.category) {
         directorName = category.name;
