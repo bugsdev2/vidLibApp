@@ -92,7 +92,7 @@ export default function Admin() {
 
   function handleVideoFilter(e: ChangeEvent<HTMLSelectElement>) {
     axios
-      .get(`https:vidlibapp-api.onrender.com/get-videos/${e.target.value}`)
+      .get(`https://vidlibapp-api.onrender.com/get-videos/${e.target.value}`)
       .then((res) => {
         setVideosList(res.data);
       });
