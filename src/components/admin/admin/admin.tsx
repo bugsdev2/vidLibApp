@@ -46,7 +46,7 @@ export default function Admin() {
       .then((res) => {
         setVideosList(res.data);
       });
-  }, []);
+  }, [videosList]);
 
   function handleVideoSubmit(values: {}, resetForm: any) {
     console.log(values);
