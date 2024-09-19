@@ -28,7 +28,6 @@ export default function VideosPage() {
       .get(`https://vidlibapp-api.onrender.com/get-videos/${categoryName}`)
       .then((res) => {
         setVideosList(res.data);
-        console.log(videosList);
       });
   }, [categoryName]);
 

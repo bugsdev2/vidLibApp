@@ -41,9 +41,11 @@ export default function Admin() {
   }, [categories]);
 
   useEffect(() => {
-    axios.get(`https:vidlibapp-api.onrender.com/get-videos/all`).then((res) => {
-      setVideosList(res.data);
-    });
+    axios
+      .get(`https://vidlibapp-api.onrender.com/get-videos/all`)
+      .then((res) => {
+        setVideosList(res.data);
+      });
   }, []);
 
   function handleVideoSubmit(values: {}, resetForm: any) {
