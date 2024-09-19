@@ -82,7 +82,7 @@ export default function Admin() {
     if (confirm("Do you want to delete the video?")) {
       let id = video.id;
       axios
-        .delete(`http://vidlibapp-api.onrender.com/delete-video/${id}`)
+        .delete(`https://vidlibapp-api.onrender.com/delete-video/${id}`)
         .then(() => {
           console.log("Video Deleted Successfully");
         })
@@ -94,7 +94,7 @@ export default function Admin() {
 
   function handleVideoFilter(e: ChangeEvent<HTMLSelectElement>) {
     axios
-      .get(`http://vidlibapp-api.onrender.com/get-videos/${e.target.value}`)
+      .get(`https://vidlibapp-api.onrender.com/get-videos/${e.target.value}`)
       .then((res) => {
         setVideosList(res.data);
       });
