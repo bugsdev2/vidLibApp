@@ -46,8 +46,9 @@ export default function Dashboard() {
   useEffect(() => {
     axios.get(`${URL}/categories`).then((response) => {
       setCategories(response.data);
+      console.log("hello");
     });
-  }, [categories]);
+  }, []);
 
   function handleCategorySelect(category: Category) {
     setCategoryName(category.category);
@@ -61,7 +62,7 @@ export default function Dashboard() {
           id="container"
           className="h-[80dvh] flex flex-wrap gap-10 p-4 justify-center sm:justify-evenly"
         >
-          {categories.map((category) => (
+          {categories?.map((category) => (
             <div
               key={category.id}
               id="card"
