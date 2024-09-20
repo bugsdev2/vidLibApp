@@ -4,7 +4,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../App";
-import { OLD_URL } from "../../constants/expressUrl";
+import { URL } from "../../constants/expressUrl";
 
 export default function Dashboard() {
   interface Category {
@@ -44,7 +44,7 @@ export default function Dashboard() {
 
   // GETS CATEGORIES AND STORES IT IN A STATE VARIABLE
   useEffect(() => {
-    axios.get(`${OLD_URL}/categories`).then((response) => {
+    axios.get(`${URL}/categories`).then((response) => {
       setCategories(response.data);
     });
   }, [categories]);

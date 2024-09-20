@@ -1,10 +1,10 @@
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useEffect, useState, useRef, ChangeEvent, useReducer } from "react";
+import { useEffect, useState, useRef, ChangeEvent } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { OLD_URL } from "../../../constants/expressUrl";
+import { URL } from "../../../constants/expressUrl";
 
 export interface Video {
   id?: number;
@@ -36,13 +36,13 @@ export default function Admin() {
   }, [cookie.username]);
 
   useEffect(() => {
-    axios.get(`${OLD_URL}/categories`).then((res) => {
+    axios.get(`${URL}/categories`).then((res) => {
       setCategories(res.data);
     });
   }, [categories]);
 
   useEffect(() => {
-    axios.get(`${OLD_URL}/get-videos/all`).then((res) => {
+    axios.get(`${URL}/get-videos/all`).then((res) => {
       setVideosList(res.data);
     });
   }, []);
@@ -50,7 +50,7 @@ export default function Admin() {
   function handleVideoSubmit(values: {}, resetForm: any) {
     console.log(values);
     axios
-      .post(`${OLD_URL}/add-video`, values)
+      .post(`${URL}/add-video`, values)
       .then(() => {
         alert("Video Added");
         setModalDisplay("hidden");
@@ -67,7 +67,7 @@ export default function Admin() {
       console.log(categoryFormRef.current.value);
       const categoryObj = { new_category: categoryFormRef.current.value };
       axios
-        .post(`${OLD_URL}/add-category`, categoryObj)
+        .post(`${URL}/add-category`, categoryObj)
         .then(() => {
           alert(`Added New Category: ${categoryObj.new_category}`);
           categoryFormRef.current.value = "";
@@ -82,7 +82,7 @@ export default function Admin() {
     if (confirm("Do you want to delete the video?")) {
       let id = video.id;
       axios
-        .delete(`${OLD_URL}/delete-video/${id}`)
+        .delete(`${URL}/delete-video/${id}`)
         .then(() => {
           console.log("Video Deleted Successfully");
         })
@@ -94,7 +94,7 @@ export default function Admin() {
   }
 
   function handleVideoFilter(e: ChangeEvent<HTMLSelectElement>) {
-    axios.get(`${OLD_URL}/get-videos/${e.target.value}`).then((res) => {
+    axios.get(`${URL}/get-videos/${e.target.value}`).then((res) => {
       setVideosList(res.data);
     });
   }
