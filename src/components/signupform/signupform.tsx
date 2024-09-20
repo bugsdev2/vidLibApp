@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { URL } from "../../constants/expressUrl";
+import { OLD_URL } from "../../constants/expressUrl";
 
 import "../loader/loader.css";
 
@@ -30,14 +30,14 @@ export default function SignUpForm() {
   function handleSubmit(values: SignUpValueObject) {
     setLoader("block");
     let usernamePrev: string;
-    axios.get(`${URL}/check-user/${values.username}`).then((response) => {
+    axios.get(`${OLD_URL}/check-user/${values.username}`).then((response) => {
       usernamePrev = response.data.username;
       if (values.username === usernamePrev) {
         setLoader("hidden");
         alert("Username already exists. Please choose another one");
       } else {
         axios
-          .post(`${URL}/add-user`, values)
+          .post(`${OLD_URL}/add-user`, values)
           .then(() => {
             setLoader("hidden");
             console.log("User Added");

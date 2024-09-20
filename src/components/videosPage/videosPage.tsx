@@ -4,7 +4,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { Video } from "../admin/admin/admin";
-import { URL } from "../../constants/expressUrl";
+import { OLD_URL } from "../../constants/expressUrl";
 
 export default function VideosPage() {
   const { categoryName } = useContext(Context);
@@ -25,7 +25,7 @@ export default function VideosPage() {
 
   useEffect(() => {
     localStorage.setItem("category", categoryName);
-    axios.get(`${URL}/get-videos/${categoryName}`).then((res) => {
+    axios.get(`${OLD_URL}/get-videos/${categoryName}`).then((res) => {
       setVideosList(res.data);
     });
   }, [categoryName]);
