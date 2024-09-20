@@ -6,13 +6,15 @@ import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import { OLD_URL } from "../../constants/expressUrl";
 
-import "../loader/loader.css";
+import { Modal } from "../modal/modal";
+import { Loader } from "../loader/loader";
 
 export default function LoginForm() {
   const navigate = useNavigate();
   const [cookie, setCookie] = useCookies(["username"]);
 
-  const [loader, setLoader] = useState("hidden");
+  const [loader, setLoader] = useState<"block" | "hidden">("hidden");
+  const [modal, setModal] = useState<"block" | "hidden">("hidden");
 
   useEffect(() => {
     if (cookie.username !== undefined) {
@@ -26,36 +28,40 @@ export default function LoginForm() {
 
   function handleSubmit(values: { username: string; password: string }) {
     setLoader("block");
+    setModal("block");
     axios
       .get(`${OLD_URL}/check-user/${values.username}`)
       .then((res) => {
         if (res.data === "") {
           setLoader("hidden");
+          setModal("hidden");
           const err: string =
             "Please create a new account to use Movie Library";
           throw err;
         }
         if (values.password === res.data.password) {
           setLoader("hidden");
+          setModal("hidden");
           setCookie("username", values.username);
           navigate("/dashboard");
         } else {
           setLoader("hidden");
+          setModal("hidden");
           alert("Entered the wrong password. Please try again");
         }
       })
       .catch((err) => {
         err.message ? alert(err.message) : alert(err);
         setLoader("hidden");
+        setModal("hidden");
       });
   }
   return (
     <>
-      <div
-        className={`${loader} p-2 bg-black opacity-90 shadow-[0_0_0_1000px_black] rounded fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
-      >
-        <div className="loader"></div>
-      </div>
+      <Loader display={loader} />
+      <Modal display={modal}>
+        <p>Please wait. The app will take up to a minute to initialize.</p>
+      </Modal>
       <div className="text-light text-center h-[88dvh]">
         <section
           id="banner"
